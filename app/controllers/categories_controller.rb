@@ -1,8 +1,15 @@
 class CategoriesController < ApplicationController
+    before_action :check_auth
     before_action :set_user, only: [:edit, :update, :show, :destroy]
     
     def index
         @catergories = Category.all
+        render json: @categories
+    end
+
+    def show
+        @categories = @user.categories.all
+        render json: @categories
     end
 
     def new

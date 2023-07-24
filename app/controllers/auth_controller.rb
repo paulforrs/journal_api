@@ -13,14 +13,19 @@ class AuthController < ApplicationController
 
     def signin
         @user = User.find_by_email(signin_params[:email])
-        p @user.token_expiration
-        if @user.authenticate(signin_params)
-            @user.generate_token
-            render json: @user
+        if @user != nil
+            if @user.authenticate(signin_params)
+                if @user.token_expired?
+                    @user.generate_token
+                    render json: @user
+                end
+                render json: @user
+            else
+                render json: @user.errors, status: 404
+            end
         else
-            render json: @user.errors, status: 404
+            render json: {message: "invalid credentials"}
         end
-
     end
 
     private

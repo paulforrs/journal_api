@@ -5,11 +5,11 @@ Rails.application.routes.draw do
   # root "articles#index"
   resources :sessions, only: [:create]
   resources :registrations, only: [:create]
-  resources :categories
-  resources :tasks
-  resources :users
-  post 'users/create' => 'users#create'
-  delete 'users/delete' => 'users#destroy'
+  resources :categories, only: [:create, :show]
+  resources :users do
+    resources :tasks
+    resources :categories
+  end
   post 'auth/signup' => 'auth#signup'
   post 'auth/signin' => 'auth#signin'
 

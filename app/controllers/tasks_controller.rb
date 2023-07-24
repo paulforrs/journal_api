@@ -3,29 +3,30 @@ class TasksController < ApplicationController
     before_action :set_user, only: [:edit, :update, :show, :destroy]
     
     def index
-        @tasks = Task.all
+        @tasks = @user.tasks.all
+        puts @tasks
+        render json: @tasks
     end
-
     def new
         @task = Task.new
     end
     
     def create
-        @user = User.new(user_params)
+        @task = @user.tasks.new(tasks_params)
 
-        if @user.save
-            @user
+        if @task.save
+            render json: @task
         else
-            render json: @user.errors, status: :unprocessable_entity
+            render json: @task.errors, status: :unprocessable_entity
         end
         
         # respond_to do |format|
-        #     if @user.save
-        #         format.html { redirect_to user_path(@user), notice:"User was successfully created" }
-        #         format.json { render :show, status: :created, location: @user}
+        #     if @task.save
+        #         format.html { redirect_to user_path(@task), notice:"User was successfully created" }
+        #         format.json { render :show, status: :created, location: @task}
         #     else
         #         format.html { render :new, status: :unprocessably_entity}
-        #         format.json { render json: @user.errors, status: :unprocessable_entity}
+        #         format.json { render json: @task.errors, status: :unprocessable_entity}
         #     end  
         # end
     end
@@ -34,23 +35,23 @@ class TasksController < ApplicationController
     end
 
     def update
-        @user.update(user_params)
+        @task.update(tasks_params)
     end
 
     def destroy
-        if @user.destroy!
-            @user
+        if @task.destroy!
+            @task
         else
             render json: {message: "User does not exist"}, status: :bad_request
         end
     end
 
     private
-    def user_params
-        params.require(:user).permit(:email, :password, :password_confirmation)
+    def tasks_params
+        params.require(:tasks).permit(:name, :category_id)
     end
 
     def set_user
-        @user = User.find(params[:id])
+        @task = @user.tasks.find(params[:id])
     end
 end

@@ -1,3 +1,3 @@
 class Category < ApplicationRecord
-    belongs_to :task , optional: true
+    has_many :tasks
 end

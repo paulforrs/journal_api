@@ -11,6 +11,7 @@ class User < ApplicationRecord
     validates :password_confirmation, presence: true, on: :create
 
     has_many :tasks
+    has_many :categories, -> { distinct}, through: :tasks
 
     after_create :generate_token
 
@@ -19,20 +20,16 @@ class User < ApplicationRecord
     end
 
     def generate_token
-        p self.token_expiration
-        if self.token_expired?
-            self.token_expiration = Time.now + Rails.application.config.auth_token_expiration
-            self.token = Base64.encode64(self.token_expiration.to_s + self.email)[0..32]
-            self.save
-        end
-        
+        self.token_expiration = Time.now + Rails.application.config.auth_token_expiration
+        self.token = Base64.encode64(self.token_expiration.to_s + self.email)[0..32]
+        self.save
     end
     
     def authenticate(signin_params)
         if self.password == signin_params[:password]
             return true
         else
-            errors.add(:base, "Invalid password")
+            errors.add(:base, "Invalid credentials")
             return false
         end
     # else
@@ -47,8 +44,10 @@ class User < ApplicationRecord
     end
 
     def token_expired?
-        if self.token_expiration < Time.now
-            return true
+        if self.token_expiration == nil
+            if self.token_expiration < Time.now
+                return true
+            end
         end
     end
 end
