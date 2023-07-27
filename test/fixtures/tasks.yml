@@ -7,8 +7,8 @@ one:
 
 two:
   name: task 2
-  category: one
-  user: one
+  category: two
+  user: two
 
 three:
   name: task 3

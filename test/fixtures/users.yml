@@ -14,6 +14,6 @@ one:
 two:
   email: allen@gmail.com
   password_digest: $2a$12$at7QePt7JG4ptLqvkjKMLOy2MmHeWUHRvYqVhN0uIfufI4IlUUhJm
-  token: MjAyMy0wNy0yOCAwOTozMTowMiBVVENwY
+  token: MjAyMy0wNy0yOCAwOTozMTowMiBVVENwY2
   token_expiration: '2023-07-28T09:31:02.149Z'
 # # column: value

@@ -15,8 +15,8 @@ class User < ApplicationRecord
     validates :password, presence: true, format: { with: /(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}/}
     validates :password_confirmation, presence: true, on: :create
 
-    has_many :tasks
-    has_many :categories
+    has_many :tasks, :dependent => :destroy
+    has_many :categories, :dependent => :destroy
 
     after_create :generate_token
 

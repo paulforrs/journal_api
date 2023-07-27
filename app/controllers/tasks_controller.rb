@@ -8,7 +8,6 @@ class TasksController < ApplicationController
         render json: @tasks
     end
     def show
-        @task = @user.tasks
         render json: @task
     end 
     def new

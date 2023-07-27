@@ -11,12 +11,5 @@ one:
 
 two:
   name: Work
-  user: one
+  user: two
 # column: value
-three:
-  name: Category 3
-  user: two
-
-four:
-  name: Category 4
-  user: two
