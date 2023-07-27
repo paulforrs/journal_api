@@ -1,39 +1,27 @@
 class CategoriesController < ApplicationController
     before_action :check_auth
-    before_action :set_user, only: [:edit, :update, :show, :destroy]
+    before_action :set_category, only: [:edit, :update, :show, :destroy]
     
     def index
-        @catergories = Category.all
+        @categories = @user.categories
         render json: @categories
     end
 
     def show
-        @categories = @user.categories.all
-        render json: @categories
+        @category
     end
 
-    def new
-        @category = Category.new
-    end
-    
     def create
-        @category = Category.new(category_params)
-
-        if @category.save
-            @category
-        else
-            render json: @category.errors, status: :unprocessable_entity
+        begin
+            @category = @user.categories.new(category_params)
+            if @category.save
+                render json: @category
+            else
+                render json: @category.errors, status: :unprocessable_entity
+            end
+        rescue => exception
+            render json: exception
         end
-        
-        # respond_to do |format|
-        #     if @user.save
-        #         format.html { redirect_to user_path(@user), notice:"User was successfully created" }
-        #         format.json { render :show, status: :created, location: @user}
-        #     else
-        #         format.html { render :new, status: :unprocessably_entity}
-        #         format.json { render json: @user.errors, status: :unprocessable_entity}
-        #     end  
-        # end
     end
 
     def edit
@@ -45,7 +33,7 @@ class CategoriesController < ApplicationController
 
     def destroy
         if @category.destroy!
-            @category
+            render json: @category
         else
             render json: {message: "User does not exist"}, status: :bad_request
         end
@@ -57,6 +45,10 @@ class CategoriesController < ApplicationController
     end
 
     def set_category
-        @category = Category.find(params[:id])
+        begin
+            @category = @user.categories.find(params[:id])
+        rescue => exception
+            render json: exception
+        end
     end
 end

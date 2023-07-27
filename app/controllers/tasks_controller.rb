@@ -1,34 +1,27 @@
 class TasksController < ApplicationController
     before_action :check_auth
-    before_action :set_user, only: [:edit, :update, :show, :destroy]
+    before_action :set_task, only: [:edit, :update, :show, :destroy]
+    before_action :is_category_valid?, only: [:update, :create]
     
     def index
-        @tasks = @user.tasks.all
-        puts @tasks
+        @tasks = @user.tasks
         render json: @tasks
     end
+    def show
+        @task = @user.tasks
+        render json: @task
+    end 
     def new
         @task = Task.new
     end
     
     def create
         @task = @user.tasks.new(tasks_params)
-
         if @task.save
             render json: @task
         else
             render json: @task.errors, status: :unprocessable_entity
         end
-        
-        # respond_to do |format|
-        #     if @task.save
-        #         format.html { redirect_to user_path(@task), notice:"User was successfully created" }
-        #         format.json { render :show, status: :created, location: @task}
-        #     else
-        #         format.html { render :new, status: :unprocessably_entity}
-        #         format.json { render json: @task.errors, status: :unprocessable_entity}
-        #     end  
-        # end
     end
 
     def edit
@@ -39,8 +32,8 @@ class TasksController < ApplicationController
     end
 
     def destroy
-        if @task.destroy!
-            @task
+        if @task.delete
+
         else
             render json: {message: "User does not exist"}, status: :bad_request
         end
@@ -51,7 +44,14 @@ class TasksController < ApplicationController
         params.require(:tasks).permit(:name, :category_id)
     end
 
-    def set_user
+    def set_task
         @task = @user.tasks.find(params[:id])
+    end
+
+    def is_category_valid?
+        if @user.categories.find_by_id(tasks_params[:category_id])
+        else
+            render json: {message: "Category does't exist"}
+        end
     end
 end

@@ -5,9 +5,11 @@ Rails.application.routes.draw do
   # root "articles#index"
   resources :sessions, only: [:create]
   resources :registrations, only: [:create]
-  resources :categories, only: [:create, :show]
-  resources :users do
-    resources :tasks
+  resources :categories
+  resources :users, defaults: {format: :json} do
+    resources :tasks do 
+      resources :categories, only: [:show, :index]
+    end
     resources :categories
   end
   post 'auth/signup' => 'auth#signup'

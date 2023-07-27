@@ -1,9 +1,9 @@
 class UsersController < ApplicationController
+    before_action :check_auth, only: [:show, :index]
     before_action :set_user, only: [:edit, :update, :show, :destroy]
     
     def index
         @users = User.all
-
         render json: {user: @users}
     end
 
@@ -13,7 +13,7 @@ class UsersController < ApplicationController
 
     def show
         @user = User.find(params[:id])
-        render json: @user
+        render :show
     end
 
     def create
@@ -45,7 +45,7 @@ class UsersController < ApplicationController
 
     def destroy
         if @user.destroy!
-            @user
+            render :destroy
         else
             render json: {message: "User does not exist"}, status: :bad_request
         end

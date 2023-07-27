@@ -15,14 +15,14 @@ default: &default
 
 development:
   <<: *default
-  database: friends_api_development
-  username: nemwel
+  database: journal_api_dev
+  username: paul
   password: root
 
 test:
   <<: *default
-  database: friends_api_test
-  username: nemwel
+  database: journal_api_test
+  username: paul
   password: root
 # Warning: The database defined as "test" will be erased and
 # re-generated from your development database when you run "rake".

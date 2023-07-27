@@ -4,8 +4,16 @@
 # model remove the "{}" from the fixture names and add the columns immediately
 # below each fixture, per the syntax in the comments below
 #
-one: {}
-# column: value
-#
-two: {}
-# column: value
+one:
+  email: paul@gmail.com
+  password_digest: $2a$12$at7QePt7JG4ptLqvkjKMLOy2MmHeWUHRvYqVhN0uIfufI4IlUUhJm
+  token: MjAyMy0wNy0yOCAwOTozMTowMiBVVENwY
+  token_expiration: '2023-07-28T09:31:02.149Z'
+# # column: value
+# #
+two:
+  email: allen@gmail.com
+  password_digest: $2a$12$at7QePt7JG4ptLqvkjKMLOy2MmHeWUHRvYqVhN0uIfufI4IlUUhJm
+  token: MjAyMy0wNy0yOCAwOTozMTowMiBVVENwY
+  token_expiration: '2023-07-28T09:31:02.149Z'
+# # column: value
