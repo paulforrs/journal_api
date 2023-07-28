@@ -44,7 +44,12 @@ class TasksController < ApplicationController
     end
 
     def set_task
-        @task = @user.tasks.find(params[:id])
+        begin
+            @task = @user.tasks.find(params[:id])
+        rescue => exception
+            render json: exception
+        end
+        
     end
 
     def is_category_valid?
