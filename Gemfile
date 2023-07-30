@@ -51,4 +51,5 @@ end
 
 
 # gem "devise", "~> 4.9"
+gem "sprockets-rails", "~> 3.4"
 
