@@ -4,27 +4,42 @@ class AuthController < ApplicationController
         @user = User.new(signup_params)
         if @user.verify_password(signup_params)
             if @user.save
-                @user
+                render :signin
             else
-                render json: @user.errors, status: 404
+                render json:{
+                status: 'failed',
+                body: {error: "invalid email and password"}
+                }
             end
+        else
+            render json: {
+                status: 'failed',
+                body:{
+                    error: "password don't match"
+                }
+            }
         end
     end
 
     def signin
-        @user = User.find_by_email(signin_params[:email])
-        if @user != nil
+        begin
+            @user = User.find_by_email(signin_params[:email])
             if @user.authenticate(signin_params)
                 if @user.token_expired?
                     @user.generate_token
-                    render json: @user
                 end
-                render json: @user
+                render :signin
             else
-                render json: @user.errors, status: 404
+                render json: {
+                    status: 'failed',
+                    body: "invalid email and password"
+                }
             end
-        else
-            render json: {message: "invalid credentials"}
+        rescue => exception
+            render json: {
+                status: 'error',
+                body:"User doesn't exist"
+            }
         end
     end
 

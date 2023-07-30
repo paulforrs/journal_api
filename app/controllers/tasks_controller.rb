@@ -16,6 +16,7 @@ class TasksController < ApplicationController
     
     def create
         @task = @user.tasks.new(tasks_params)
+        @task.is_complete = false
         if @task.save
             render json: @task
         else

@@ -8,8 +8,8 @@ Rails.application.routes.draw do
   resources :categories
   resources :users, defaults: {format: :json} do
     resources :tasks do 
-      resources :categories, only: [:show, :index]
-    end
+      resources :categories
+    end 
     resources :categories
   end
   post 'auth/signup' => 'auth#signup'

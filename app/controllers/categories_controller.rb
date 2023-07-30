@@ -4,7 +4,7 @@ class CategoriesController < ApplicationController
     
     def index
         @categories = @user.categories
-        render json: @categories
+        render :index
     end
 
     def show
@@ -15,7 +15,7 @@ class CategoriesController < ApplicationController
         begin
             @category = @user.categories.new(category_params)
             if @category.save
-                render json: @category
+                render :create
             else
                 render json: @category.errors, status: :unprocessable_entity
             end
@@ -24,18 +24,17 @@ class CategoriesController < ApplicationController
         end
     end
 
-    def edit
-    end
-
     def update
-        @category.update(category_params)
+        if @category.update(category_params)
+            render :update
+        end
     end
 
     def destroy
         if @category.destroy!
-            render json: @category
+            render :delete
         else
-            render json: {message: "User does not exist"}, status: :bad_request
+            render json: {status: "success", body: @category.errors}
         end
     end
 

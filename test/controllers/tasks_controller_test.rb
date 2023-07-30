@@ -32,6 +32,7 @@ class TasksControllerTest<ActionDispatch::IntegrationTest
                 }
             },
             headers: { 'Authorization' => "Token #{@user1.token}"}
+
         end
     end
 
